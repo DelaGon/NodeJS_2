@@ -38,6 +38,12 @@ app.post('/hello',function (req, res) {
 //app.listen(port, function () {
    // console.log('server running on ' + port)
 //})
+let port = process.env.PORT || config.port
+sequelize.sync({force: false}).then(() => {
+app.listen(port, function () {
+console.log('Server running on ' + port)
+})
+})
 const {sequelize} = require('./models')
 sequelize.sync({force: false}).then(() => {
 app.listen(port, function () {
