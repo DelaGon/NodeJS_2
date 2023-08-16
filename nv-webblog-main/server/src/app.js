@@ -12,12 +12,12 @@ app.use(bodyParser.urlencoded({extended: true}))
 require('.route')(app)
 
 app.get('/status', function (req, res) {
-    res.send('Hello nodejs server')
+res.send('Hello nodejs server')
 })
 
 app.get('/hello/:person', function (req,res) {
-    console.log('hello - ' + req.params.person)
-    res.send('sey hello with' + req.params.person)
+console.log('hello - ' + req.params.person)
+res.send('sey hello with' + req.params.person)
 })
 //get user by id
 //app.get('/user/:userId', function (req, res) {
@@ -40,7 +40,7 @@ app.post('/hello',function (req, res) {
 //})
 
 sequelize.sync({force: false}).then(() => {
-    app.listen(port, function () {
-    console.log('Server running on ' + port)
-    })
+app.listen(port, function () {
+console.log('Server running on ' + port)
+})
 })
