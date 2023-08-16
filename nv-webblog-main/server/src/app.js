@@ -38,7 +38,7 @@ app.post('/hello',function (req, res) {
 //app.listen(port, function () {
    // console.log('server running on ' + port)
 //})
-
+const {sequelize} = require('./models')
 sequelize.sync({force: false}).then(() => {
 app.listen(port, function () {
 console.log('Server running on ' + port)
