@@ -1,23 +1,75 @@
+const { User } = require('../models')
 module.exports = {
-    //get all USER
-    index (req, res) {
-    res.send('เรียกผู้ใช้งานทั้งหมด')
+    async index(req, res) {
+        try {
+            const users = await User.findAll();
+            res.send(users);
+        } catch (err) {
+            res.status(500).send({
+                error: 'The users information was incorrect'
+            });
+        }
+    },
+    
+    async create(req, res) {
+        try {
+            const user = await User.create(req.body);
+            res.send(user.toJSON());
+        } catch (err) {
+            res.status(500).send({
+                error: 'Create user incorrect'
+            });
+        }
+    },
+    
+// edit user, suspend, active
+async put(req, res) {
+    try {
+        await User.update(req.body, {
+            where: {
+                id: req.params.userId
+            }
+        });
+        res.send(req.body);
+    } catch (err) {
+        res.status(500).send({
+            error: 'Update user incorrect'
+        });
+    }
 },
-//CREATE USER
-create (req, res) {
-    req.send('ทำการสร้างผู้ใช้ใหม่:' + JSON.stringify(req.boDY))
-},
-//EDIT USER,SUSPEND, ACTIVE
-put(req, res) {
-    req.send('ทำการแก้ไขผู้ใช้งาน: ' + req.params.userID + ' : ' + JSON.stringify(req.body))
-},
-//delete user
-remove (req, res) {
-    res.send('ทำการลบผู้ใช้: '+ req.params.userID + ' : ' + JSON.stringify(req.body))
-},
-//get user by id
 
-show(req,res) {
-    res.send('ดูข้อมูลผู้ใช้งาน: ' + req.params.userID)
-}
+// delete user
+async remove(req, res) {
+    try {
+        const user = await User.findOne({
+            where: {
+                id: req.params.userId
+            }
+        })
+        if (!user) {
+            return res.status(403).send({
+                error: 'The user information was incorrect'
+            })
+        }
+        await user.destroy()
+        res.send(user)
+    } catch (err) {
+        res.status(500).send({
+            error: 'The user information was incorrect'
+        })
+    }
+},
+
+// get user by id
+async show(req, res) {
+    try {
+        const user = await User.findByPk(req.params.userId);
+        res.send(user);
+    } catch (err) {
+        res.status(500).send({
+            error: 'The user information was incorrect'
+        });
+    }
+},
+
 }
